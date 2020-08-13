@@ -66,9 +66,18 @@ for player, birth in play_list:
             info[1] = info[1].replace('-', '')
             year = int(info[0])
             salary = int(info[1])
+            if salary == 900000:
+                salary = 0
             df.loc[(df['선수'] == player) & (df['연도'] == year) & (df['생일'] == birth), '연봉'] = salary
 
 driver.close()
 
-print(df[df['선수'] == '황재균'])
+# 해당 기록 당시 선수 연차 계산, 및 df['나이'] column 생성
+year = df['연도'].tolist()
+birth = df['생일'].tolist()
+age = []
+for i in range(len(year)):
+    age.append(year[i] - int(birth[i][:4]) + 1)
+df['나이'] = pd.DataFrame(age)
+
 df.to_csv("data/statiz_fixed.csv",encoding='utf-8-sig')
