@@ -1,9 +1,3 @@
-# matplotlib 한글 출력 가능하도록 만들기
-from matplotlib import font_manager, rc
-
-font_name = font_manager.FontProperties(fname="c:/Windows/Fonts/gulim.ttc").get_name()
-rc('font', family=font_name)
-
 # 데이터 크롤링 모듈
 from selenium import webdriver
 from bs4 import BeautifulSoup
@@ -15,14 +9,11 @@ import numpy as np
 # second_crawler로 만든 데이터 로드
 df = pd.read_csv('data/statiz_origin.csv')
 
-# 해당 데이터셋 선수 이름순으로 정렬 및 인덱스 정리
-df = df.sort_values(['선수'])
-df = df.reset_index(drop=True)
-del df['Unnamed: 0']
-
 # 투수 포지션 선수들 삭제
 pitcher_id = df[df['포지션'] == 'P'].index
 df = df.drop(pitcher_id)
+# 30G 이하 출전 선수 삭제
+df = df[df.G >= 30]
 
 # 선수 정보 조회 위한 선수, 생일 list 생성
 players = df['선수'].tolist()
@@ -36,7 +27,7 @@ foreigner = []
 for i in range(len(players)):
     url = 'http://www.statiz.co.kr/player.php?name={}&birth={}'.format(players[i], births[i])
     driver.get(url)
-    driver.implicitly_wait(5)
+    driver.implicitly_wait(10)
 
     html = driver.find_element_by_xpath('//*[@class="dropdown-menu dropdown-menu-left"]').get_attribute(
         "innerHTML")

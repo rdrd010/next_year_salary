@@ -1,9 +1,3 @@
-# matplotlib 한글 출력 가능하도록 만들기
-from matplotlib import font_manager, rc
-
-font_name = font_manager.FontProperties(fname="c:/Windows/Fonts/gulim.ttc").get_name()
-rc('font', family=font_name)
-
 # 데이터 크롤링 모듈
 from selenium import webdriver
 from bs4 import BeautifulSoup
@@ -89,6 +83,7 @@ columns = ['선수', 'WAR'] + [i.text for i in soup.findAll("tr")[0].findAll("th
                                                                                          'wRC+', 'WAR+', '연도', '포지션',
                                                                                          '생일']
 print(columns)
+
 # column 명 추가
 result.columns = columns
 
